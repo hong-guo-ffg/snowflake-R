@@ -1,0 +1,10 @@
+// .devcontainer/devcontainer.json
+{
+  "name": "R Codespace",
+  "image": "rocker/rstudio:4.2.2",                   // Official Rocker image with RStudio
+  "features": {
+    // alternatively you could use features to install common tools
+  },
+  "forwardPorts": [8787],                            // RStudio Server port
+  "postCreateCommand": "R -e 'install.packages(c(\"tidyverse\",\"remotes\"))'"
+}
