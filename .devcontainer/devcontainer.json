@@ -1,10 +1,16 @@
-// .devcontainer/devcontainer.json
 {
-  "name": "R Codespace",
-  "image": "rocker/rstudio:4.2.2",                   // Official Rocker image with RStudio
+  "name": "R Notebook",
+  "image": "rocker/rstudio:4.2.2",                     
   "features": {
-    // alternatively you could use features to install common tools
+    // installs the R vscode extension & language server
+    "ghcr.io/devcontainers/features/rust-cargo:1": {}
   },
-  "forwardPorts": [8787],                            // RStudio Server port
-  "postCreateCommand": "R -e 'install.packages(c(\"tidyverse\",\"remotes\"))'"
+  "extensions": [
+    "REditorSupport.r",             // core R language support
+    "REditorSupport.r-lsp",         // R LSP client
+    "yzhang.markdown-all-in-one",   // markdown tooling
+    "jkjustjoshing.r-markdown"      // R Markdown notebook preview
+  ],
+  "forwardPorts": [8787], 
+  "postCreateCommand": "R -e 'install.packages(c(\"rmarkdown\",\"knitr\"))'"
 }
