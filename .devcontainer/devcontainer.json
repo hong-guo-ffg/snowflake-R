@@ -1,16 +1,13 @@
+// .devcontainer/devcontainer.json
 {
   "name": "R Notebook",
-  "image": "rocker/rstudio:4.2.2",                     
-  "features": {
-    // installs the R vscode extension & language server
-    "ghcr.io/devcontainers/features/rust-cargo:1": {}
-  },
+  "image": "rocker/rstudio:4.2.2",             // Rocker image with R & RStudio
   "extensions": [
-    "REditorSupport.r",             // core R language support
-    "REditorSupport.r-lsp",         // R LSP client
-    "yzhang.markdown-all-in-one",   // markdown tooling
-    "jkjustjoshing.r-markdown"      // R Markdown notebook preview
+    "REditorSupport.r",                        // R language support
+    "REditorSupport.r-lsp",                    // R language server client
+    "yzhang.markdown-all-in-one",              // Markdown tooling
+    " ikuyadeu.r"                              // R Markdown Notebook UI
   ],
-  "forwardPorts": [8787], 
-  "postCreateCommand": "R -e 'install.packages(c(\"rmarkdown\",\"knitr\"))'"
+  "forwardPorts": [8787],                      // exposes RStudio Server
+  "postCreateCommand": "R -e 'install.packages(c(\"rmarkdown\",\"knitr\",\"languageserver\"), repos=\"https://cloud.r-project.org\")'"
 }
