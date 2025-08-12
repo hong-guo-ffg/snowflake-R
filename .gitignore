@@ -1,0 +1,33 @@
+# R specific
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Configuration files with credentials
+config.R
+*.env
+.Renviron
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+
+# Log files
+*.log
+
+# ODBC configuration files with credentials
+odbc*.ini
+
+# Package build files
+*.tar.gz
+
+# RStudio project files
+.Rproj.user/
