@@ -1,0 +1,67 @@
+flowchart TD
+
+%% Ingestion
+subgraph Ingestion
+  Sources[External sources: SaaS, files, events]
+  RAW_INGESTOR((RAW_INGESTOR))
+  FIVETRAN_WAREHOUSE[/FIVETRAN_WAREHOUSE/]
+end
+
+%% Raw layer
+subgraph Raw_DB
+  FIVETRAN_DATABASE[(FIVETRAN_DATABASE)]
+end
+
+%% Transform layer
+subgraph Transform
+  TRANSFORMER((TRANSFORMER))
+  TRANSFORM_WH[/TRANSFORM_WH/]
+  TRANSFORMATION_DB[(TRANSFORMATION_DB)]
+end
+
+%% Publish layer
+subgraph Publish
+  RPT_PUBLISHER((RPT_PUBLISHER))
+  GITHUB_CI_USER((GITHUB_CI_USER))
+  JED_REPORTING_DB[(JED_REPORTING_DB)]
+end
+
+%% Consume layer
+subgraph Consume
+  ANALYST((ANALYST))
+  BI_READER((BI_READER))
+  BI_SERVICE((BI_SERVICE))
+  REPORT_WH[/REPORT_WH/]
+end
+
+%% Governance and Ops (apply across layers)
+DATA_STEWARD((DATA_STEWARD))
+OPS_ADMIN((OPS_ADMIN))
+
+%% Flows
+Sources --> RAW_INGESTOR
+RAW_INGESTOR -->|use| FIVETRAN_WAREHOUSE
+RAW_INGESTOR -->|load insert| FIVETRAN_DATABASE
+
+FIVETRAN_DATABASE -->|read| TRANSFORMER
+TRANSFORMER -->|use| TRANSFORM_WH
+TRANSFORMER -->|write model| TRANSFORMATION_DB
+
+GITHUB_CI_USER -->|default role| RPT_PUBLISHER
+TRANSFORMATION_DB -->|curated outputs| RPT_PUBLISHER
+RPT_PUBLISHER -->|publish views| JED_REPORTING_DB
+
+ANALYST -->|use| REPORT_WH
+BI_READER -->|use| REPORT_WH
+BI_SERVICE -->|use| REPORT_WH
+JED_REPORTING_DB -->|read| ANALYST
+JED_REPORTING_DB -->|read| BI_READER
+JED_REPORTING_DB -->|read| BI_SERVICE
+
+DATA_STEWARD -. apply policies tags .- FIVETRAN_DATABASE
+DATA_STEWARD -. apply policies tags .- TRANSFORMATION_DB
+DATA_STEWARD -. apply policies tags .- JED_REPORTING_DB
+
+OPS_ADMIN -. monitor operate .- FIVETRAN_WAREHOUSE
+OPS_ADMIN -. monitor operate .- TRANSFORM_WH
+OPS_ADMIN -. monitor operate .- REPORT_WH
