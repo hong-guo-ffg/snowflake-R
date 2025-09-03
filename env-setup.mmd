@@ -38,3 +38,12 @@ subgraph Legend
   L1[Solid Arrow] --> L2[Data Flow: Sources → Warehouses]
   L3[Dashed Arrow] -.-> L4[Code/Deployment Promotion Path]
 end
+
+%% Data Flow Within Each Environment
+subgraph Env["Any Environment (Sandbox / Staging / Prod)"]
+    R[Raw Layer]
+    C[Clean/Transform Layer]
+    RP[Reportable Layer]
+
+    R --> C --> RP
+end
