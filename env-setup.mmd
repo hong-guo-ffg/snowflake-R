@@ -1,0 +1,40 @@
+flowchart LR
+
+%% Local Dev
+subgraph Local
+  A1[Hub Local Env]
+  A2[Mock Data Setup]
+  A1 --> A2
+end
+
+%% Dev Sandbox
+subgraph DevSandbox
+  B1[Ephemeral Dev Sandbox]
+  B2[Cloned Schema / Small Test Data]
+  B2 --> B1
+end
+
+%% Staging
+subgraph Staging
+  C1[Staging Warehouse]
+  C2[(Staging Sources)]
+  C2 --> C1
+end
+
+%% Production
+subgraph Production
+  D1[Prod Warehouse]
+  D2[(Prod Sources)]
+  D2 --> D1
+end
+
+%% Promotion Path (dashed)
+A2 -.-> B1
+B1 -.-> C1
+C1 -.-> D1
+
+%% Legend
+subgraph Legend
+  L1[Solid Arrow] --> L2[Data Flow: Sources → Warehouses]
+  L3[Dashed Arrow] -.-> L4[Code/Deployment Promotion Path]
+end
